@@ -1,8 +1,12 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
+import { TodoInput } from "./TodoInput";
+import { TodoList } from "./TodoList";
+import { StyledEngineProvider } from "@mui/material";
+import { textAlign } from "@mui/system";
 
 // TodoItem型宣言
-type TodoItem = {
+export type TodoItem = {
   id?: number;
   name: string;
   isComplete: boolean;
@@ -91,37 +95,14 @@ export const Todo = () => {
     fetchTodoData();
   }, []);
   return (
-    <div>
+    <div style={{ textAlign: "center" }}>
       <h1>Todoリスト</h1>
-      <input
-        type="text"
-        placeholder="Todoリスト"
-        onChange={handleChangeInput}
-        value={text}
+      <TodoInput text={text} onChange={handleChangeInput} onClick={handleAdd} />
+      <TodoList
+        todos={todos}
+        onChange={handleChangeStatus}
+        onClick={handleDelete}
       />
-      <button onClick={handleAdd}>追加</button>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>
-            <input
-              placeholder="checktodo"
-              type="checkbox"
-              checked={todo.isComplete}
-              onChange={() => {
-                handleChangeStatus(todo.id);
-              }}
-            />
-            {todo.isComplete ? (
-              <span style={{ textDecorationLine: "line-through" }}>
-                {todo.name}
-              </span>
-            ) : (
-              <span>{todo.name}</span>
-            )}
-            <button onClick={() => handleDelete(todo.id)}>削除</button>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };
